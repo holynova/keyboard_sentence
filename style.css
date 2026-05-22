@@ -1,0 +1,1099 @@
+/* iOS Keyboard Morph - Style Sheet */
+
+/* --- Theme Variables --- */
+:root {
+  --font-title: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* App Interface Colors (Light Mode) */
+  --bg-gradient-1: #e5ecf6;
+  --bg-gradient-2: #d0d7e5;
+  --panel-bg: rgba(255, 255, 255, 0.7);
+  --panel-border: rgba(255, 255, 255, 0.45);
+  --panel-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+  --text-main: #1d1d1f;
+  --text-muted: #86868b;
+  
+  /* iOS Notes Interface (Light Mode) */
+  --notes-bg: #ffffff;
+  --notes-text: #000000;
+  --notes-header-bg: #f9f9f9;
+  --notes-border: #e5e5ea;
+  --notes-orange: #ff9500;
+  --notes-tint: #ff9500;
+  
+  /* Keyboard Layout Colors (Light Mode) */
+  --kbd-bg: rgba(210, 213, 219, 0.94);
+  --kbd-backdrop: blur(20px);
+  --key-letter-bg: #ffffff;
+  --key-ctrl-bg: #aeb3bd;
+  --key-space-bg: #ffffff;
+  --key-return-bg: #007aff;
+  --key-text-color: #000000;
+  --key-ctrl-text: #000000;
+  --key-return-text: #ffffff;
+  --key-shadow: 0 1px 0px rgba(0, 0, 0, 0.35);
+  --key-pressed-bg: #e1e3e6;
+  
+  --key-popup-bg: #ffffff;
+  --popup-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  
+  /* Device Colors */
+  --iphone-bezel: #1c1c1e;
+  --iphone-inner-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.1);
+  --iphone-border: #3a3a3c;
+  
+  --accent-color: #ff9500;
+  --accent-hover: #e08300;
+  --transition-speed-key: 0.6s;
+  --transition-speed-layout: 0.7s;
+}
+
+body.dark-mode {
+  /* App Interface Colors (Dark Mode) */
+  --bg-gradient-1: #121214;
+  --bg-gradient-2: #191920;
+  --panel-bg: rgba(30, 30, 35, 0.7);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  --text-main: #f5f5f7;
+  --text-muted: #86868b;
+  
+  /* iOS Notes Interface (Dark Mode) */
+  --notes-bg: #000000;
+  --notes-text: #ffffff;
+  --notes-header-bg: #1c1c1e;
+  --notes-border: #2c2c2e;
+  --notes-orange: #ff9f0a;
+  --notes-tint: #ff9f0a;
+  
+  /* Keyboard Layout Colors (Dark Mode) */
+  --kbd-bg: rgba(30, 30, 30, 0.85);
+  --key-letter-bg: #636366;
+  --key-ctrl-bg: #3a3a3c;
+  --key-space-bg: #636366;
+  --key-return-bg: #0a84ff;
+  --key-text-color: #ffffff;
+  --key-ctrl-text: #ffffff;
+  --key-return-text: #ffffff;
+  --key-shadow: 0 1px 0px rgba(0, 0, 0, 0.4);
+  --key-pressed-bg: #2c2c2e;
+  
+  --key-popup-bg: #444446;
+  --popup-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Base Styles --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: hidden; /* Prevent body scrollbar */
+  transition: background 0.8s ease, color 0.5s ease;
+}
+
+/* --- Layout Wrapper --- */
+.app-wrapper {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- Header --- */
+.app-header {
+  text-align: center;
+}
+
+.logo {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #ff2d55 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+
+/* --- Main Content Grid --- */
+.main-content {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+  body {
+    overflow: auto;
+  }
+}
+
+/* --- Glassmorphic Control Panel --- */
+.control-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--panel-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.5s ease;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-section h2 {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-num {
+  background: var(--accent-color);
+  color: #ffffff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Text Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--notes-border);
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
+  resize: none;
+  outline: none;
+  transition: all 0.3s;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.dark-mode textarea {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.15);
+}
+
+/* Presets */
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.preset-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 12px;
+  padding: 4px 9px;
+  font-size: 0.75rem;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.dark-mode .preset-btn {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.preset-btn:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.preset-btn.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Config Rows */
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-row label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Toggle buttons styling */
+.toggle-buttons {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px;
+  border-radius: 7px;
+  gap: 1px;
+}
+
+.dark-mode .toggle-buttons {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.toggle-btn.active {
+  background: var(--notes-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* Sliders */
+.slider-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.slider-label span:last-child {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  outline: none;
+}
+
+.dark-mode input[type="range"] {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Custom Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 24px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.dark-mode .checkmark {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--accent-color);
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 3px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 1.8px 1.8px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark::after {
+  display: block;
+}
+
+/* Action Buttons */
+.action-section {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.primary-btn {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(255, 149, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.primary-btn:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+  transform: translateY(-0.5px);
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.secondary-btn {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-main);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .secondary-btn {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.secondary-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.secondary-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.panel-footer {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  border-top: 1px solid var(--panel-border);
+  padding-top: 10px;
+}
+
+/* --- iPhone Simulator --- */
+.simulator-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iphone-bezel {
+  width: 290px;
+  height: 600px;
+  background: var(--iphone-bezel);
+  border-radius: 40px;
+  border: 10px solid var(--iphone-border);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.25), 
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    var(--iphone-inner-shadow);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.5s ease;
+}
+
+/* Island */
+.iphone-island {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86px;
+  height: 22px;
+  background: #000000;
+  border-radius: 16px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  box-shadow: inset 0 0 3px rgba(255,255,255,0.05);
+}
+
+.camera {
+  width: 8px;
+  height: 8px;
+  background: #0a0e29;
+  border-radius: 50%;
+  border: 0.5px solid #141f3b;
+  position: relative;
+}
+
+.camera::after {
+  content: '';
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 2.5px;
+  height: 2.5px;
+  background: #4169e1;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.speaker {
+  width: 30px;
+  height: 2.5px;
+  background: #1c1c1e;
+  border-radius: 1px;
+}
+
+/* Screen */
+.iphone-screen {
+  flex: 1;
+  background: var(--notes-bg);
+  color: var(--notes-text);
+  border-radius: 30px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Status Bar */
+.status-bar {
+  height: 34px;
+  padding: 0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.72rem;
+  font-weight: 600;
+  z-index: 999;
+  padding-bottom: 3px;
+  user-select: none;
+}
+
+.status-bar .icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.battery {
+  width: 18px;
+  height: 9px;
+  border: 0.8px solid currentColor;
+  border-radius: 2px;
+  padding: 0.8px;
+  position: relative;
+  display: flex;
+}
+
+.battery-level {
+  background: currentColor;
+  height: 100%;
+  border-radius: 0.8px;
+}
+
+.battery::after {
+  content: '';
+  position: absolute;
+  right: -2.5px;
+  top: 2px;
+  width: 1.2px;
+  height: 3.2px;
+  background: currentColor;
+  border-radius: 0 0.8px 0.8px 0;
+}
+
+/* --- Notes App --- */
+.notes-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 180px; /* Space for keyboard */
+}
+
+.notes-header {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--notes-border);
+  background: var(--notes-header-bg);
+  transition: background 0.5s, border-color 0.5s;
+  user-select: none;
+}
+
+.notes-back {
+  background: none;
+  border: none;
+  color: var(--notes-orange);
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  cursor: pointer;
+}
+
+.notes-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--notes-orange);
+}
+
+.action-icon {
+  cursor: pointer;
+}
+
+.done-btn {
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.notes-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notes-date {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 2px;
+  user-select: none;
+}
+
+.notes-editor {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  outline: none;
+  font-weight: 400;
+}
+
+.blinking-cursor {
+  color: var(--notes-orange);
+  font-weight: 100;
+  animation: blink 1s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  from, to { color: transparent }
+  50% { color: var(--notes-orange) }
+}
+
+/* --- Keyboard Area (Bottom Anchored) --- */
+.keyboard-area {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--kbd-bg);
+  backdrop-filter: var(--kbd-backdrop);
+  -webkit-backdrop-filter: var(--kbd-backdrop);
+  padding: 6px 5px 2px 5px;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+  overflow: visible; /* CRITICAL for key popups to float above */
+  transition: background 0.5s ease;
+}
+
+.keyboard {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  overflow: visible;
+  transition: width var(--transition-speed-layout) cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  gap: 4px;
+  overflow: visible;
+  transition: all var(--transition-speed-layout) cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Row 3 Special Structure */
+#row-3 {
+  justify-content: center;
+  width: 100%;
+}
+
+.letters-subrow {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  overflow: visible;
+  transition: all var(--transition-speed-layout) cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* --- Key Styling --- */
+.key {
+  height: 34px;
+  width: 22px; /* STRICTLY FIXED WIDTH for letter keys */
+  flex: none !important; /* DO NOT GROW OR SHRINK */
+  background: var(--key-letter-bg);
+  border-radius: 4px;
+  box-shadow: var(--key-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--key-text-color);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  /* Animate all spacing/width/margin variables smoothly */
+  transition: 
+    width var(--transition-speed-key) cubic-bezier(0.25, 1, 0.5, 1),
+    margin var(--transition-speed-key) cubic-bezier(0.25, 1, 0.5, 1),
+    opacity var(--transition-speed-key) cubic-bezier(0.25, 1, 0.5, 1),
+    transform var(--transition-speed-key) cubic-bezier(0.25, 1, 0.5, 1),
+    background-color 0.1s ease,
+    color 0.1s ease;
+  overflow: visible;
+}
+
+/* Non-letter key base widths (strictly fixed, no flex factors or percentages) */
+.ctrl-key {
+  background: var(--key-ctrl-bg);
+  color: var(--key-ctrl-text);
+  font-size: 0.78rem;
+}
+
+/* Specific STRICTLY FIXED widths for control keys */
+.shift-key, .backspace-key {
+  width: 30px;
+}
+
+.num-key {
+  width: 52px;
+}
+
+.globe-key {
+  width: 30px;
+}
+
+.return-key {
+  width: 58px;
+  background: var(--key-return-bg);
+  color: var(--key-return-text);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.space-key {
+  width: 106px;
+  font-size: 0.8rem;
+  background: var(--key-space-bg);
+}
+
+.key-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Key label inside key */
+.key-label {
+  display: inline-block;
+  pointer-events: none;
+  text-transform: lowercase;
+}
+
+/* Shift active state styling */
+.shift-key.active-shift {
+  background: #ffffff;
+  color: #000000;
+}
+
+.keyboard.uppercase-state .key-label {
+  text-transform: uppercase;
+}
+
+/* Pressed State */
+.key.pressed {
+  background-color: var(--key-pressed-bg) !important;
+}
+
+.key.return-key.pressed {
+  opacity: 0.7;
+}
+
+/* --- Keyboard Hidden/Shrunk Key State --- */
+.key.key-hidden {
+  opacity: 0 !important;
+  width: 0 !important;
+  /* Cancel the gap double spacing by applying mathematically calculated negative margins */
+  margin-left: -2px !important;
+  margin-right: -2px !important;
+  pointer-events: none !important;
+  transform: scale(0) !important;
+}
+
+/* --- iOS Speech Bubble Key Popup Preview --- */
+.key-popup {
+  position: absolute;
+  bottom: 40px; /* High above the key */
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+  width: 38px;
+  height: 46px;
+  background: var(--key-popup-bg);
+  border-radius: 8px;
+  box-shadow: var(--popup-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--key-text-color);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1000;
+  transform-origin: bottom center;
+  transition: 
+    transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.25),
+    opacity 0.1s ease;
+}
+
+.key-popup::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px 4px 0;
+  border-style: solid;
+  border-color: var(--key-popup-bg) transparent;
+  display: block;
+  width: 0;
+}
+
+/* Display Popup on Press */
+.key.pressed .key-popup {
+  transform: translateX(-50%) scale(1.2);
+  opacity: 1;
+}
+
+/* Avoid popups on control keys and space key */
+.ctrl-key .key-popup, .space-key .key-popup {
+  display: none !important;
+}
+
+/* --- Single Row Merge Mode CSS --- */
+.keyboard.single-row-merged .keyboard-row[data-row="1"],
+.keyboard.single-row-merged .keyboard-row[data-row="3"] .letters-subrow {
+  display: none !important; /* Hide other rows/letter holders */
+}
+
+/* Make Row 2 host the merged single row of letters */
+.keyboard.single-row-merged #row-2 {
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* --- Square Pack Mode CSS --- */
+.keyboard.square-pack-merged {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-content: center !important;
+  gap: 4px !important;
+  padding: 6px 12px 10px 12px !important;
+  transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.keyboard.square-pack-merged .keyboard-row {
+  display: none !important; /* Hide row containers since elements are flattened */
+}
+
+.keyboard.square-pack-merged .key {
+  margin: 0 !important; /* Reset margins */
+  transform: none !important; /* Reset layout transforms */
+}
+
+.keyboard.square-pack-merged .key.key-hidden {
+  width: 0 !important;
+  opacity: 0 !important;
+  margin-left: -2px !important;
+  margin-right: -2px !important;
+  transform: scale(0) !important;
+  pointer-events: none !important;
+}
+
+.keyboard.square-pack-merged .key.key-gone {
+  display: none !important; /* Completely remove from layout after transition ends */
+}
+
+/* Home Indicator Bar */
+.home-indicator {
+  width: 100px;
+  height: 4px;
+  background: var(--notes-text);
+  opacity: 0.8;
+  border-radius: 2.5px;
+  margin: 6px auto 3px auto;
+  user-select: none;
+}
+
+/* --- Recording Status Bar Styling --- */
+.status-bar .time {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  padding: 0 4px;
+}
+
+.status-bar .time.recording {
+  background-color: #ff3b30;
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 0.68rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* --- Video Compiling Overlay --- */
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: var(--font-body);
+}
+
+.video-overlay-content {
+  background: rgba(30, 30, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 280px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.video-progress-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.video-progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.video-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-color);
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+.video-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- View Transitions API Support --- */
+#ios-keyboard {
+  view-transition-name: keyboard-container;
+}
+
+::view-transition-group(*) {
+  animation-duration: var(--transition-speed-layout);
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Disable default crossfade animations for individual keys to allow them to slide cleanly */
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: var(--transition-speed-layout);
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Avoid flashing/flickering of the entire page during View Transition */
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Disable standard CSS transitions when View Transition is active to prevent conflicts */
+.keyboard.no-transitions,
+.keyboard.no-transitions .key,
+.keyboard.no-transitions .keyboard-row,
+.keyboard.no-transitions .letters-subrow {
+  transition: none !important;
+}
+

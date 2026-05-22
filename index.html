@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS 软键盘自适应收缩与打字演示</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="logo">iOS Keyboard <span>Morph</span></h1>
+      <p class="subtitle">输入英文句子，观察键盘按键的平滑收缩、布局重排与自动模拟打字效果</p>
+    </header>
+
+    <div class="main-content">
+      <!-- Left Panel: Controls -->
+      <section class="control-panel">
+        <div class="panel-section">
+          <h2><span class="step-num">1</span> 输入英文文本</h2>
+          <div class="input-group">
+            <textarea id="text-input" placeholder="输入你要演示的英文句子..." rows="3">The quick brown fox jumps over the lazy dog</textarea>
+            <div class="presets">
+              <button class="preset-btn" data-text="Hello World">Hello World</button>
+              <button class="preset-btn" data-text="iOS Keyboard">iOS Keyboard</button>
+              <button class="preset-btn" data-text="Antigravity AI">Antigravity AI</button>
+              <button class="preset-btn" data-text="The quick brown fox jumps over the lazy dog">Quick Brown Fox</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h2><span class="step-num">2</span> 动画配置</h2>
+          
+          <div class="control-row">
+            <label for="layout-mode">键盘收缩模式</label>
+            <div class="toggle-buttons" id="layout-mode-group">
+              <button class="toggle-btn active" data-value="row-shrink">保留三行布局</button>
+              <button class="toggle-btn" data-value="single-row">合并为单行</button>
+              <button class="toggle-btn" data-value="square-pack">收缩为方形</button>
+            </div>
+          </div>
+
+          <div class="control-row">
+            <label for="theme-mode">UI 主题</label>
+            <div class="toggle-buttons" id="theme-mode-group">
+              <button class="toggle-btn active" data-value="light">浅色模式</button>
+              <button class="toggle-btn" data-value="dark">深色模式</button>
+            </div>
+          </div>
+
+          <div class="control-row slider-row">
+            <div class="slider-label">
+              <span>演示速度</span>
+              <span id="demo-speed-val">200ms</span>
+            </div>
+            <input type="range" id="demo-speed" min="0" max="800" step="10" value="200">
+          </div>
+
+          <div class="control-row check-row">
+            <label class="checkbox-container">
+              <input type="checkbox" id="sound-toggle" checked>
+              <span class="checkmark"></span>
+              开启 iOS 打字音效
+            </label>
+          </div>
+
+          <div class="control-row check-row">
+            <label class="checkbox-container">
+              <input type="checkbox" id="record-toggle">
+              <span class="checkmark"></span>
+              录制并导出 MP4/WebM 视频
+            </label>
+          </div>
+        </div>
+
+        <div class="panel-section action-section">
+          <button id="start-btn" class="primary-btn">开始动画演示</button>
+          <button id="reset-btn" class="secondary-btn">重置键盘</button>
+        </div>
+
+        <div class="panel-footer">
+          <p>按键气泡预览与按键音效已完美适配。点击“开始动画演示”后，首先会过滤掉未使用的字母按键，使键盘缩窄，然后模拟打字录入。</p>
+        </div>
+      </section>
+
+      <!-- Right Panel: iPhone Simulator -->
+      <section class="simulator-panel">
+        <div class="iphone-bezel">
+          <!-- Island / Notch -->
+          <div class="iphone-island">
+            <div class="camera"></div>
+            <div class="speaker"></div>
+          </div>
+          
+          <!-- Screen -->
+          <div class="iphone-screen">
+            <!-- Top Status Bar -->
+            <div class="status-bar">
+              <div class="time">9:41</div>
+              <div class="icons">
+                <!-- Signal -->
+                <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <rect x="3" y="14" width="2.5" height="6" rx="0.5"/>
+                  <rect x="7" y="11" width="2.5" height="9" rx="0.5"/>
+                  <rect x="11" y="8" width="2.5" height="12" rx="0.5"/>
+                  <rect x="15" y="5" width="2.5" height="15" rx="0.5"/>
+                  <rect x="19" y="2" width="2.5" height="18" rx="0.5" opacity="0.3"/>
+                </svg>
+                <!-- Wifi -->
+                <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 21a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM4.8 13.8a10 10 0 0 1 14.4 0M1.9 11a14 14 0 0 1 20.2 0M7.6 16.6a6 6 0 0 1 8.8 0"/>
+                </svg>
+                <!-- Battery -->
+                <div class="battery">
+                  <div class="battery-level" style="width: 88%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes App Interface -->
+            <div class="notes-app">
+              <div class="notes-header">
+                <button class="notes-back">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                  <span>备忘录</span>
+                </button>
+                <div class="notes-actions">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="action-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                  </svg>
+                  <span class="done-btn">完成</span>
+                </div>
+              </div>
+              
+              <div class="notes-body">
+                <div class="notes-date" id="current-date">Today at 9:41 AM</div>
+                <div class="notes-editor"><span id="typed-text" class="typed-text"></span><span class="blinking-cursor">|</span></div>
+              </div>
+            </div>
+
+            <!-- iOS Soft Keyboard -->
+            <div class="keyboard-area">
+              <div class="keyboard" id="ios-keyboard">
+                <!-- Row 1: Q W E R T Y U I O P -->
+                <div class="keyboard-row" id="row-1" data-row="1">
+                  <!-- JS will populate or we skeleton them here -->
+                  <div class="key letter-key" data-char="q"><span class="key-label">q</span></div>
+                  <div class="key letter-key" data-char="w"><span class="key-label">w</span></div>
+                  <div class="key letter-key" data-char="e"><span class="key-label">e</span></div>
+                  <div class="key letter-key" data-char="r"><span class="key-label">r</span></div>
+                  <div class="key letter-key" data-char="t"><span class="key-label">t</span></div>
+                  <div class="key letter-key" data-char="y"><span class="key-label">y</span></div>
+                  <div class="key letter-key" data-char="u"><span class="key-label">u</span></div>
+                  <div class="key letter-key" data-char="i"><span class="key-label">i</span></div>
+                  <div class="key letter-key" data-char="o"><span class="key-label">o</span></div>
+                  <div class="key letter-key" data-char="p"><span class="key-label">p</span></div>
+                </div>
+
+                <!-- Row 2: A S D F G H J K L -->
+                <div class="keyboard-row" id="row-2" data-row="2">
+                  <div class="key letter-key" data-char="a"><span class="key-label">a</span></div>
+                  <div class="key letter-key" data-char="s"><span class="key-label">s</span></div>
+                  <div class="key letter-key" data-char="d"><span class="key-label">d</span></div>
+                  <div class="key letter-key" data-char="f"><span class="key-label">f</span></div>
+                  <div class="key letter-key" data-char="g"><span class="key-label">g</span></div>
+                  <div class="key letter-key" data-char="h"><span class="key-label">h</span></div>
+                  <div class="key letter-key" data-char="j"><span class="key-label">j</span></div>
+                  <div class="key letter-key" data-char="k"><span class="key-label">k</span></div>
+                  <div class="key letter-key" data-char="l"><span class="key-label">l</span></div>
+                </div>
+
+                <!-- Row 3: Shift, Z X C V B N M, Backspace -->
+                <div class="keyboard-row" id="row-3" data-row="3">
+                  <!-- Shift (Control Key) -->
+                  <div class="key ctrl-key shift-key" id="key-shift">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="key-icon">
+                      <!-- iOS shift hollow arrow (outline) -->
+                      <path d="M12 2L3.5 11.5H8.5V20H15.5V11.5H20.5L12 2Z" />
+                    </svg>
+                  </div>
+                  
+                  <!-- Container to hold letters in Row 3 to allow proper shrinking of middle part -->
+                  <div class="letters-subrow" id="row-3-letters">
+                    <div class="key letter-key" data-char="z"><span class="key-label">z</span></div>
+                    <div class="key letter-key" data-char="x"><span class="key-label">x</span></div>
+                    <div class="key letter-key" data-char="c"><span class="key-label">c</span></div>
+                    <div class="key letter-key" data-char="v"><span class="key-label">v</span></div>
+                    <div class="key letter-key" data-char="b"><span class="key-label">b</span></div>
+                    <div class="key letter-key" data-char="n"><span class="key-label">n</span></div>
+                    <div class="key letter-key" data-char="m"><span class="key-label">m</span></div>
+                  </div>
+
+                  <!-- Backspace (Control Key) -->
+                  <div class="key ctrl-key backspace-key" id="key-backspace">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="key-icon">
+                      <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                      <line x1="18" y1="9" x2="12" y2="15"></line>
+                      <line x1="12" y1="9" x2="18" y2="15"></line>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Row 4: 123, Globe/Emoji, Space, Send -->
+                <div class="keyboard-row" id="row-4" data-row="4">
+                  <div class="key ctrl-key num-key" id="key-123"><span>123</span></div>
+                  <div class="key ctrl-key globe-key" id="key-globe">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="key-icon">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"></path>
+                    </svg>
+                  </div>
+                  <div class="key space-key" id="key-space" data-char=" "><span>space</span></div>
+                  <div class="key ctrl-key return-key" id="key-return"><span>发送</span></div>
+                </div>
+              </div>
+
+              <!-- Home Indicator Bar at the bottom of iPhone screen -->
+              <div class="home-indicator"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Video Compiling Overlay -->
+  <div id="video-overlay" class="video-overlay">
+    <div class="video-overlay-content">
+      <div class="spinner"></div>
+      <div class="video-progress-text">正在生成演示视频... <span id="video-progress-val">0</span>%</div>
+      <div class="video-progress-bar-container">
+        <div id="video-progress-bar" class="video-progress-bar"></div>
+      </div>
+      <div class="video-hint">生成可能需要几秒钟，请稍候...</div>
+    </div>
+  </div>
+
+  <!-- html2canvas for capturing frames -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
