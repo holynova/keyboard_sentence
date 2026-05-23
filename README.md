@@ -1,68 +1,48 @@
 # iOS Keyboard Morph - 软键盘自适应收缩与打字演示
 
-这是一个精美的 Web 应用，交互式地演示了 iOS 软键盘的自适应收缩、布局重排与自动模拟打字效果。
+一个精美的 iOS 键盘布局自适应收缩与打字动画模拟器。
+
+👉 **[🌐 在线预览体验](https://holynova.github.io/keyboard_sentence/)**
+
+---
 
 ## 🌟 项目特色
 
-1. **多重自适应收缩模式**
-   - **保留三行布局 (`row-shrink`)**：保持标准 QWERTY 键盘的三行结构，只让未使用按键逐渐淡出消失，键盘整体按比例缩窄。
-   - **合并为单行 (`single-row`)**：在隐藏未使用按键后，将所有剩余的有效字母和 Shift、Backspace 等控制键平滑合并为一行。
-   - **收缩为方形 (`square-pack`)**：通过算法自动计算出最佳的排布宽度，将剩余的按键在一个流式布局中重新折行包裹，使得键盘最终呈现接近 `1:1` 的正方形。
-   
-2. **流畅的布局过渡 (View Transitions API)**
-   - 使用现代浏览器原生的 **View Transitions API**，使按键在折行、位移和重排时，能够像 iOS 系统级动画一样以平滑的滑移轨迹变换位置，消除生硬闪烁与换行跳跃。
-
-3. **高拟真打字体验**
-   - **网页音频合成 (Web Audio Context)**：不依赖任何外部音频文件，使用正弦波、噪音滤波器和指数包络线，动态合成高度仿真的 iOS 按键音（普通键、空格键、回退键和发送键各有专属音调）。
-   - **气泡弹出预览 (`Key Popup Preview`)**：在打字过程中为按键触发 iOS 标志性的向上突出气泡，并根据当前的大小写状态同步改变字母。
-   
-4. **视频录制与导出 (带声音)**
-   - 包含一键“录制并导出视频”功能，能够在执行演示时在后台逐帧捕获画面。
-   - 自动将渲染帧与合成音频流在浏览器中进行混合编码，导出高清晰度且带有音效的 `.mp4` 或 `.webm` 视频文件。
-
-5. **精美的高级视觉设计**
-   - 现代玻璃拟态 (`Glassmorphism`) 风格的控制面板。
-   - 还原度极高的 iPhone 真机模拟器，配合状态栏、小药丸（灵动岛）和 Home Indicator 触发线。
-   - 深度优化的暗黑模式 (`Dark Mode`)，支持无缝一键切换。
-   - 支持统一的速度滑块调节，可从 0ms (瞬间完成) 到 800ms (慢速教学模式) 进行精细控制。
+- **自适应收缩布局**：支持保留三行 (`row-shrink`)、单行合并 (`single-row`) 及最佳宽高比的方形排布 (`square-pack`)。
+- **View Transitions API 动效**：原生平滑滑动重排，完美消除按键折行时的闪烁与跳跃。
+- **高拟真打字体验**：基于 Web Audio API 动态合成的 iOS 键盘按键音与 iOS 经典的气泡弹出预览（`Key Popup`）。
+- **视频录制与导出**：一键捕获画面并在浏览器内合并录制带按键声的 `.mp4` 视频。
+- **高级视觉与主题**：精致的 iOS 拟真设计与玻璃拟态控制台，支持完美自适应的 Dark Mode。
 
 ---
 
 ## 📷 效果演示
 
-### 界面截图
-![iOS Keyboard Morph Screenshot](assets/screenshot.png)
+### 视频演示
+<video src="assets/demo.mp4" controls width="320" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-width: 100%;"></video>
 
-### 动态效果视频
-可在项目本地 `assets/demo.mp4` 查看，或直接在支持 HTML5 视频的浏览器/编辑器中播放：
+*(注：如果在 GitHub Markdown 中无法直接播放，请打开 [assets/demo.mp4](assets/demo.mp4) 观看。)*
 
-<video src="assets/demo.mp4" controls width="320" height="660" style="max-width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);"></video>
+### 静态截图
+![Screenshot](assets/screenshot.png)
 
 ---
 
 ## 🚀 快速上手
 
-### 1. 运行本地开发服务器
-本项目已完成 Git 和 NPM 的初始化。你可以通过以下步骤在本地跑起来：
-
 ```bash
-# 安装依赖 (无须预装任何库，直接通过 npm 跑本地服务)
+# 启动本地开发服务 (在 http://localhost:3000 查看)
 npm run dev
 ```
 
-启动后，在浏览器中打开命令行提示的地址 (通常是 `http://localhost:3000`) 即可体验。
-
-### 2. 使用方法
-1. 在 **输入英文文本** 框中输入你想演示的句子（或选择 Preset 预设句子，例如 `Quick Brown Fox`）。
-2. 在 **键盘收缩模式** 中选择：`保留三行布局` / `合并为单行` / `收缩为方形`。
-3. 可按需调整 **演示速度** (滑块拉到最左边是 `极速 0ms`)，并选择是否开启打字音效或视频录制。
-4. 点击 **开始动画演示** 即可见证键盘动态收缩并流畅开始打字的全过程。
-5. 点击 **重置键盘** 可以随时将键盘还原至全尺寸 QWERTY 的初始状态。
+1. **输入语句**：在文本框内输入日常短句（如 `Good morning`）。
+2. **选择模式**：点击选择收缩模式（如 `收缩为方形`）。
+3. **开始演示**：点击 `开始动画演示` 即可。
 
 ---
 
 ## 🛠️ 文件结构
-- `index.html` — iPhone 模拟器骨架与控制面板 HTML5 结构。
-- `style.css` — 包含了完整的 CSS3 Flex、流式布局、多行包裹配置，以及 View Transitions API 相关动效。
-- `app.js` — 打字模拟、音效合成、视频合成与 View Transitions 布局包装的核心应用逻辑。
-- `assets/` — 存放项目的截图与演示视频文件。
+- `index.html` — iPhone 模拟器骨架与控制面板
+- `style.css` — 布局、玻璃拟态样式及 View Transitions 定义
+- `app.js` — 模拟打字、音频合成、视频渲染与过渡逻辑
+- `assets/` — 存放项目截图与演示视频文件
