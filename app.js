@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const textInput = document.getElementById('text-input');
   const presetBtns = document.querySelectorAll('.preset-btn');
   const startBtn = document.getElementById('start-btn');
+  const exportImgBtn = document.getElementById('export-img-btn');
   const resetBtn = document.getElementById('reset-btn');
   const layoutModeBtns = document.querySelectorAll('#layout-mode-group .toggle-btn');
   const themeModeBtns = document.querySelectorAll('#theme-mode-group .toggle-btn');
@@ -239,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enable inputs and buttons
     startBtn.disabled = false;
     textInput.disabled = false;
+    exportImgBtn.disabled = false;
     presetBtns.forEach(btn => btn.disabled = false);
     document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('disabled'));
     
@@ -478,6 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Disable inputs and buttons during demo
     startBtn.disabled = true;
     textInput.disabled = true;
+    exportImgBtn.disabled = true;
     presetBtns.forEach(btn => btn.disabled = true);
     document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.add('disabled'));
     
@@ -802,6 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
     isAnimating = false;
     startBtn.disabled = false;
     textInput.disabled = false;
+    exportImgBtn.disabled = false;
     presetBtns.forEach(btn => btn.disabled = false);
     document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('disabled'));
   };
@@ -946,10 +950,44 @@ document.addEventListener('DOMContentLoaded', () => {
     currentDateDiv.textContent = dateStr;
   };
 
+  // --- Export final screenshot of the simulator ---
+  const exportFinalImage = async () => {
+    try {
+      exportImgBtn.disabled = true;
+      const originalText = exportImgBtn.textContent;
+      exportImgBtn.textContent = '正在导出...';
+      
+      const bezel = document.querySelector('.iphone-bezel');
+      const canvas = await html2canvas(bezel, {
+        scale: 2, // High resolution
+        logging: false,
+        useCORS: true,
+        backgroundColor: null
+      });
+      
+      const url = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ios-keyboard-snapshot-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      exportImgBtn.textContent = originalText;
+    } catch (err) {
+      console.error('Image export failed:', err);
+      alert('图片导出失败，请重试！');
+      exportImgBtn.textContent = '导出最终图片';
+    } finally {
+      exportImgBtn.disabled = false;
+    }
+  };
+
   // --- Control Panel Listeners ---
   const setupControls = () => {
     // Action buttons
     startBtn.addEventListener('click', startAnimation);
+    exportImgBtn.addEventListener('click', exportFinalImage);
     resetBtn.addEventListener('click', resetKeyboard);
     
     // Preset English sentences

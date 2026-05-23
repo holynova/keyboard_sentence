@@ -415,7 +415,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* Action Buttons */
 .action-section {
   display: grid;
-  grid-template-columns: 2.2fr 1fr;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr;
   gap: 8px;
   margin-top: 4px;
 }
