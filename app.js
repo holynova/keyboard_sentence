@@ -32,8 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let soundEnabled = soundToggle.checked;
   let layoutMode = 'row-shrink'; // 'row-shrink', 'single-row', or 'square-pack'
   let themeMode = 'light';
-  let fadeSpeed = parseInt(demoSpeedInput.value);
-  let typeSpeed = parseInt(demoSpeedInput.value);
+  const getDelayFromCps = (val) => {
+    if (val === 31) return 0;
+    return Math.round(1000 / val);
+  };
+  let fadeSpeed = getDelayFromCps(parseInt(demoSpeedInput.value));
+  let typeSpeed = getDelayFromCps(parseInt(demoSpeedInput.value));
   let isAnimating = false;
   let animationTimeoutIds = [];
   
@@ -983,17 +987,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     
-    // Unified Speed Slider
+    // Unified Speed Slider (CPS - Characters Per Second)
     demoSpeedInput.addEventListener('input', (e) => {
       const val = parseInt(e.target.value);
-      fadeSpeed = val;
-      typeSpeed = val;
-      if (val === 0) {
+      if (val === 31) {
+        fadeSpeed = 0;
+        typeSpeed = 0;
         demoSpeedVal.textContent = '极速 (0ms)';
       } else {
-        demoSpeedVal.textContent = `${val}ms`;
+        const ms = Math.round(1000 / val);
+        fadeSpeed = ms;
+        typeSpeed = ms;
+        demoSpeedVal.textContent = `${val} 字/秒`;
       }
-      updateTransitionSpeeds(val);
+      updateTransitionSpeeds(fadeSpeed);
     });
     
     // Checkbox sound
@@ -1030,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNotesDate();
     setupControls();
     setupManualTyping();
-    updateTransitionSpeeds(parseInt(demoSpeedInput.value));
+    updateTransitionSpeeds(getDelayFromCps(parseInt(demoSpeedInput.value)));
   };
 
   init();
