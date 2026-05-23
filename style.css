@@ -1097,3 +1097,7 @@ input[type="range"]::-webkit-slider-thumb {
   transition: none !important;
 }
 
+.github-link:hover {
+  color: var(--accent-color) !important;
+}
+
