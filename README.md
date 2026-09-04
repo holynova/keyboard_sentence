@@ -4,6 +4,8 @@
 
 👉 **[🌐 在线预览体验](https://holynova.github.io/keyboard_sentence/)**
 
+Cloudflare 静态预览：[keyboard-sentence.xiaosang.cc](https://keyboard-sentence.xiaosang.cc/)
+
 ---
 
 ## 🌟 项目特色
