@@ -19,12 +19,10 @@
 ## 📷 效果演示
 
 ### 视频演示
-<video src="assets/demo.mp4" controls width="320" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-width: 100%;"></video>
-
-*(注：如果在 GitHub Markdown 中无法直接播放，请打开 [assets/demo.mp4](assets/demo.mp4) 观看。)*
+[观看键盘收缩与打字演示视频（MP4）](assets/demo.mp4)
 
 ### 静态截图
-![Screenshot](assets/screenshot.png)
+![键盘模拟器与收缩模式控制面板](assets/screenshot.png)
 
 ---
 
