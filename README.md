@@ -2,6 +2,11 @@
 
 一个精美的 iOS 键盘布局自适应收缩与打字动画模拟器。
 
+<p align="center">
+  <img src="assets/readme/hero.svg" width="100%" alt="iOS Keyboard Morph - 软键盘自适应收缩与打字演示: 一个精美的 iOS 键盘布局自适应收缩与打字动画模拟器。">
+</p>
+
+
 👉 **[🌐 在线预览体验](https://holynova.github.io/keyboard_sentence/)**
 
 ---
